@@ -1,20 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Valve.Newtonsoft.Json;
+using System.IO;
 
 public class SpawnPointInitializer : MonoBehaviour
 {
+    private List<PointData> notes = new List<PointData>();
     // 定义一个公共变量以便在Inspector中可以看到并修改
     [SerializeField]
-    private Transform spawnPoint;
+    public Gameobiect spawnPoint;
 
     // 定义默认的SpawnPoint位置
     [SerializeField]
     private Vector3 defaultSpawnPointPosition;
 
-    // 定义SpawnPoint的旋转角度
-    [SerializeField]
-    private Vector3 spawnPointRotation = new Vector3(0, 0, 0);
+   
 
     // Awake是在Start之前调用的方法
     void Awake()
@@ -25,16 +27,38 @@ public class SpawnPointInitializer : MonoBehaviour
 
     void Start()
     {
-        // 检查是否已经有spawnPoint被分配
-        if (spawnPoint == null)
-        {
-            // 如果没有，则创建一个新的空游戏对象作为SpawnPoint
-            GameObject spawnPointObject = new GameObject("SpawnPoint");
-            spawnPoint = spawnPointObject.transform;
+        string path = Application.dataPath + "/Resources/notes.json";
+        string dataAsJson = File.ReadAllText(path);
+        notes = JsonConvert.DeserializeObject<List<PointData>>(dataAsJson);
 
-            // 设置SpawnPoint的位置和旋转角度
-            spawnPoint.position = defaultSpawnPointPosition;
-            spawnPoint.rotation = Quaternion.Euler(spawnPointRotation);
+        // 开始生成音符
+        StartCoroutine(SpawnNotes());
+
+        // 检查是否已经有spawnPoint被分配
+       
+    }
+    IEnumerator SpawnNotes()
+    {
+        foreach (var note in notes)
+        {
+            // 等待延迟时间
+            yield return new WaitForSeconds(note.delayBeforeStart);
+
+            // 实例化音符
+            GameObject instance = Instantiate(, note.position, Quaternion.identity);
+
+            // 移动音符
+            StartCoroutine(MoveNote(instance, note.targetPosition, note.speed));
         }
     }
+}
+public class PointData
+{
+    public float[] position;
+  
+    public float time;
+
+    // 辅助方法，用于从数组创建Vector3
+    public Vector3 GetPosition() => new Vector3(position[0], position[1], position[2]);
+   
 }
