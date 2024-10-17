@@ -43,7 +43,6 @@ public class MusicCubeManager : MonoBehaviour
 
 }
 
-// 用于监听音乐方块销毁的组件
 public class MusicCubeDestroyListener : MonoBehaviour
 {
     public delegate void OnDestroyedDelegate();
