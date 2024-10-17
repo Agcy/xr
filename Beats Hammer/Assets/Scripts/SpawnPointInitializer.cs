@@ -7,24 +7,32 @@ using System.IO;
 
 public class SpawnPointInitializer : MonoBehaviour
 {
+<<<<<<< HEAD
     private List<PointData> notes = new List<PointData>();
     // 定义一个公共变量以便在Inspector中可以看到并修改
     [SerializeField]
     public Gameobiect spawnPoint;
 
+=======
+>>>>>>> 63afa85f72939affb5e7fe2d32f4955a56a31f6a
     // 定义默认的SpawnPoint位置
     [SerializeField]
-    private Vector3 defaultSpawnPointPosition;
+    private Vector3 defaultSpawnPointPosition = new Vector3(0f, 2f, 6f);
 
+<<<<<<< HEAD
    
+=======
+    // 用于存储生成点的Transform
+    public Transform spawnPoint;
+>>>>>>> 63afa85f72939affb5e7fe2d32f4955a56a31f6a
 
     // Awake是在Start之前调用的方法
     void Awake()
     {
         // 在Awake方法中初始化defaultSpawnPointPosition
-        defaultSpawnPointPosition = new Vector3(Random.Range(-1f, 1f), 1, 6);
-    }
+        defaultSpawnPointPosition = new Vector3(Random.Range(-1f, 1f), 2f, 6f);
 
+<<<<<<< HEAD
     void Start()
     {
         string path = Application.dataPath + "/Resources/notes.json";
@@ -49,7 +57,24 @@ public class SpawnPointInitializer : MonoBehaviour
 
             // 移动音符
             StartCoroutine(MoveNote(instance, note.targetPosition, note.speed));
+=======
+        // 检查是否已经有spawnPoint被分配
+        if (spawnPoint == null)
+        {
+            // 如果没有，则创建一个新的空游戏对象作为SpawnPoint
+            GameObject spawnPointObject = new GameObject("SpawnPoint");
+            spawnPoint = spawnPointObject.transform;
+
+            Debug.Log("SpawnPoint is not assigned. Creating a new one at: " + defaultSpawnPointPosition);
+            // 设置SpawnPoint的位置
+            spawnPoint.position = defaultSpawnPointPosition;
+>>>>>>> 63afa85f72939affb5e7fe2d32f4955a56a31f6a
         }
+    }
+
+    void Start()
+    {
+        // 可以在这里添加其他初始化逻辑
     }
 }
 public class PointData
