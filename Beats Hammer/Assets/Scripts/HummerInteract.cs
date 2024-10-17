@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Valve.VR;
 
 public class HummerInteract: MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class HummerInteract: MonoBehaviour
             // 计算锤子与音乐方块之间的距离
             float distance = Vector3.Distance(transform.position, other.transform.position);
             Debug.Log("Distance between cube and hummer: " + distance);
+
             // 根据距离进行判定
             if (distance <= perfectDistanceMax)
             {
@@ -55,6 +57,7 @@ public class HummerInteract: MonoBehaviour
                 {
                     perfectScoreMeshPro.text = perfectScore.ToString();
                 }
+                TriggerVibration(0.1f, 0.5f); // 触发震动
             }
             else if (distance <= normalDistanceMax)
             {
@@ -65,11 +68,46 @@ public class HummerInteract: MonoBehaviour
                 {
                     normalScoreMeshPro.text = normalScore.ToString();
                 }
+                TriggerVibration(0.1f, 0.5f); // 触发震动
             }
 
             // 销毁音乐方块
             Debug.Log("Music Cube is destroyed");
             Destroy(other.gameObject);
+        }
+    }
+
+    // 触发手柄震动的方法
+    private void TriggerVibration(float duration, float frequency)
+    {
+        // 获取当前手柄的动作设备
+        SteamVR_Input_Sources handType = GetHandType();
+
+        if (handType == SteamVR_Input_Sources.LeftHand)
+        {
+            SteamVR_Actions._default.Haptic.Execute(0, duration, frequency, 0.5f, SteamVR_Input_Sources.LeftHand);
+        }
+        else if (handType == SteamVR_Input_Sources.RightHand)
+        {
+            SteamVR_Actions._default.Haptic.Execute(0, duration, frequency, 0.5f, SteamVR_Input_Sources.RightHand);
+        }
+    }
+       
+    // 根据锤子的标签确定是左手还是右手
+    private SteamVR_Input_Sources GetHandType()
+    {
+        if (this.gameObject.CompareTag("LeftHammer"))
+        {
+            return SteamVR_Input_Sources.LeftHand;
+        }
+        else if (this.gameObject.CompareTag("RightHammer"))
+        {
+            return SteamVR_Input_Sources.RightHand;
+        }
+        else
+        {
+            Debug.LogWarning("Hammer tag not set correctly. Defaulting to LeftHand.");
+            return SteamVR_Input_Sources.LeftHand; // 默认为左手
         }
     }
 }

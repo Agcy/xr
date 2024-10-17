@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MusicCubeManager : MonoBehaviour
 {
@@ -37,6 +38,13 @@ public class MusicCubeManager : MonoBehaviour
 
     public void OnMusicCubeDestroyed()
     {
+
+        // 检查 spawnPoint 是否为 null 或已被销毁
+        if (spawnPoint == null)
+        {
+            Debug.LogError("Spawn Point is null or destroyed. Cannot spawn new Music Cube.");
+            return;
+        }
         // 重新生成音乐方块
         SpawnMusicCube();
     }

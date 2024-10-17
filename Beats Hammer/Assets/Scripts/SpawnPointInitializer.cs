@@ -6,7 +6,7 @@ public class SpawnPointInitializer : MonoBehaviour
 {
     // 定义默认的SpawnPoint位置
     [SerializeField]
-    private Vector3 defaultSpawnPointPosition = new Vector3(0f, 1.5f, 6f);
+    private Vector3 defaultSpawnPointPosition = new Vector3(0f, 2f, 6f);
 
     // 用于存储生成点的Transform
     public Transform spawnPoint;
@@ -15,7 +15,7 @@ public class SpawnPointInitializer : MonoBehaviour
     void Awake()
     {
         // 在Awake方法中初始化defaultSpawnPointPosition
-        defaultSpawnPointPosition = new Vector3(Random.Range(-1f, 1f), 1.5f, 6f);
+        defaultSpawnPointPosition = new Vector3(Random.Range(-1f, 1f), 2f, 6f);
 
         // 检查是否已经有spawnPoint被分配
         if (spawnPoint == null)

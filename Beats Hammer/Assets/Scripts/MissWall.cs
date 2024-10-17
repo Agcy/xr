@@ -8,7 +8,7 @@ public class MissWall : MonoBehaviour
     private int missScore = 0;
     [SerializeField]
     private TextMeshPro missScoreMeshPro;
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("MusicCube"))
